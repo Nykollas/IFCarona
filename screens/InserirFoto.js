@@ -49,7 +49,6 @@ class InserirFoto extends Component{
                     [
                         {text: 'OK',},
                     ],
-                    {cancelable: false},
                 );
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);

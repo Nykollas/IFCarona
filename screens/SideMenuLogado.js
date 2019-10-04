@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from 'firebase';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { regExpLiteral } from '@babel/types';
 
 dim_scr =  Dimensions.get('screen');
 dim_win =  Dimensions.get('window');
@@ -87,11 +88,26 @@ class SideMenuLogado extends Component{
            }
        }
        var userId = user.uid;
-       console.log(userId);
        firebase.database().ref('user/' + userId).on('value', (snapshot) => {
-
                 var formated_name = this.formatName(snapshot.val().nome);
-
+                const ref = firebase.storage().ref('avatars/'+userId+'/image.jpeg');
+                ref.getDownloadURL().then(url  => {
+                    const downloader = new XMLHttpRequest();
+                    downloader.onload = () => {
+                        this.setState({avatar: downloader.response});
+                    }
+                    downloader.onerror = (error) => {
+                        Alert.alert(
+                            '',
+                            error.error_message,
+                            [
+                                {text:'Ok'}
+                            ]
+                        );
+                    }
+                    downloader.open("GET", url, true);
+                    downloader.send();
+                })
                 this.setState({nome:formated_name, avatar:snapshot.val().avatar});
                 console.log("Imagem do side menu lateral recarregada!");
             }
