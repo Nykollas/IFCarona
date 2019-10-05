@@ -13,7 +13,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import {systemWeights} from 'react-native-typography';
-import { Header } from 'react-navigation';
+import { Header } from 'react-navigation-stack';
 import MapView, { Marker } from "react-native-maps";
 import NumericInput from 'react-native-numeric-input';
 import Geocoder from 'react-native-geocoding';
@@ -22,13 +22,16 @@ import MapViewDirections from 'react-native-maps-directions';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import firebase from 'firebase';
 
+
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
+
 const API_KEY_GOOGLE_MAPS = "AIzaSyDNlio27LqraNed4EAIjmjBiuEQ46UjyIg";
-INCREMENT = Number(Header.HEIGHT / hp('100%') * 100).toFixed(2).concat("%");
 export default class MinhaPostagem extends Component {
 
     state = {
         preco: 3,
-        contato: '',
+        contato: '',    
         prev_contato: '',
         desc: '',
         procura: true,
@@ -352,7 +355,6 @@ export default class MinhaPostagem extends Component {
         }
     }
 
-
     render() {
         return (
 
@@ -366,7 +368,7 @@ export default class MinhaPostagem extends Component {
                             </View>
                             <View style={styles.input_tel_container}>
                                 <View style={styles.input_tel_icon}>
-                                    <Icon name="whatsapp" size={0.57 * hp(INCREMENT)} color='#353535' />
+                                    <Icon name="whatsapp" size={hp( 3 * _8PT_ )} color='#353535' />
                                 </View>
                                 <TextInput returnKeyType={"next"}
                                     onSubmitEditing={() => this._preco_input.ref.focus()}
@@ -409,7 +411,7 @@ export default class MinhaPostagem extends Component {
                                     iconStyle={styles.input_price_arrows}
                                 />
                             </View>
-                            <View style={styles.input_place_container}>
+                            <View style={styles.input_place_saida_container}>
                                 <TextInput
                                     ref={(component) => { this._saida_input = component; this.setRefForNumericInput() }}
                                     onFocus={() => { this.scroll.scrollTo({ y: 100, x: 0 }) }}
@@ -420,7 +422,7 @@ export default class MinhaPostagem extends Component {
                                     returnKeyType="next"
                                     onSubmitEditing={() => { this._destino_input.focus() }} />
                             </View>
-                            <View style={styles.input_place_container}>
+                            <View style={styles.input_place_destino_container}>
                                 <TextInput returnKeyType="done"
                                     ref={component => this._destino_input = component}
                                     style={styles.input_place}
@@ -441,40 +443,40 @@ export default class MinhaPostagem extends Component {
                                     </MapView>
                                     <TouchableOpacity style={styles.map_button_origin} onPress={this.goToOriginRegion}>
                                         <View >
-                                            <Icon color="#FFFFFF" name="home-map-marker" size={0.57 * hp(INCREMENT)} />
+                                            <Icon color="#FFFFFF" name="home-map-marker" size={hp( 3 * _8PT_)} />
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.map_button_dest} onPress={this.goToDestRegion}>
                                         <View >
-                                            <Icon color="#FFFFFF" name="map-marker" size={0.57 * hp(INCREMENT)} />
+                                            <Icon color="#FFFFFF" name="map-marker" size={hp(3 * _8PT_ )} />
                                         </View>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                             {!this.state.founding ?
                                 <TouchableOpacity disabled={!(this.state.descr_start && this.state.descr_end)} onPress={() => { this.getLocation(this.state.descr_start, this.state.descr_end) }}>
-                                    <View style={[styles.button, {marginBottom:0.42 * hp(INCREMENT)}]}>
-                                        <Icon name="map-search" color="white" size={0.42 * hp(INCREMENT)} style={{ marginHorizontal: wp("4%") }} />
-                                        <Text style={{ fontSize: 0.42 * hp(INCREMENT), color: 'white' }}>Localizar</Text>
+                                    <View style={[styles.button, {marginBottom:hp(2*_8PT_)}]}>
+                                        <Icon name="map-search" color="white" size={hp(3 *_8PT_ )} style={{ marginHorizontal: wp("4%") }} />
+                                        <Text style={{ fontSize:3 * hp(_8PT_) - _4PT_, color: 'white' }}>Localizar</Text>
                                     </View>
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity onPress={() => { }}>
-                                    <View style={styles.button}>
+                                    <View style={[styles.button, {marginBottom:hp(2*_8PT_)}]}>
                                         <ActivityIndicator color={"white"} size={hp("5%")} />
                                     </View>
                                 </TouchableOpacity>
                             }
                             {this.state.found ?
                                 <TouchableOpacity disabled={!this.state.found} onPress={this.addOferta}>
-                                    <View style={[styles.button, {marginTop:0.14 * hp(INCREMENT)} ]}>
-                                        <Text style={{ fontSize: 0.42 * hp(INCREMENT), color: 'white' }}>Salvar</Text>
+                                    <View style={[styles.button, {marginTop:0.14 * hp(_8PT_)} ]}>
+                                        <Text style={{ fontSize: 3 * hp(_8PT_) - _4PT_, color: 'white' }}>Salvar</Text>
                                     </View>
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity disabled={!this.state.found} onPress={this.addOferta}>
-                                    <View style={[styles.button_disabled, {marginTop:0.14 * hp(INCREMENT)} ]}>
-                                        <Text style={{  fontSize: 0.42 * hp(INCREMENT), color: 'white' }}>Salvar</Text>
+                                    <View style={[styles.button_disabled, {marginBottom:hp(2*_8PT_)} ]}>
+                                        <Text style={{  fontSize: 3 * hp(_8PT_) - _4PT_, color: 'white' }}>Salvar</Text>
                                     </View>
                                 </TouchableOpacity>
                             }
@@ -520,7 +522,7 @@ const styles = StyleSheet.create(
             marginBottom: 5,
         },
         button: {
-            height: 0.875 * hp(INCREMENT),
+            height: hp( 6 *_8PT_),
             backgroundColor: 'red',
             borderRadius: 15,
             alignItems: 'center',
@@ -532,7 +534,7 @@ const styles = StyleSheet.create(
             flexDirection: 'row',
         },
         button_disabled: {
-            height: 50,
+            height: hp( 6 *_8PT_),
             backgroundColor: 'red',
             borderRadius: 15,
             alignItems: 'center',
@@ -549,8 +551,8 @@ const styles = StyleSheet.create(
             flexDirection:'row',
             backgroundColor: '#dbdbdb',
             width: '50%',
-            height: 0.892 * hp(INCREMENT),
-            marginBottom:0.42 * hp(INCREMENT),
+            height: hp( 6 *_8PT_),
+            marginBottom:hp(2*_8PT_),
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             borderBottomRightRadius: 15,
@@ -559,41 +561,41 @@ const styles = StyleSheet.create(
             borderColor: '#b7b2b2ff',
             alignItems:'center',
             justifyContent:'center',
-            paddingRight:3,
+            paddingRight:-1,
         },
         input_price: {
             flex:1,
             backgroundColor: 'white',
-            height: 0.78 * hp(INCREMENT),
+            height: hp( 6 * _8PT_ - _4PT_),
             borderBottomLeftRadius: 0,
         },
         input_price_text: {
-            fontSize:0.375*hp(INCREMENT),
+            fontSize:hp(2 * _8PT_ + _4PT_ ),
             color:'#7A7A7A'
         },
         input_price_arrows: {
             color: '#AAAAAA',
-            
         },
         input_price_icon:{
-            width: 0.71* hp(INCREMENT),
+            width: hp(5 * _8PT_),
             alignItems: "center",
             justifyContent: "center"
         },
         input_price_icon_text:{
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 0.375 * hp(INCREMENT), 
+            fontSize:hp(2 * _8PT_ + _4PT_ ),
             fontWeight:'bold',
             color:'#353535'
         },
+        
         input_tel_container: {
-            flexDirection:'row',
             backgroundColor: '#dbdbdb',
             width: '100%',
+            flexDirection:'row',
             paddingRight:3,
-            height: 0.892 * hp(INCREMENT),
-            marginBottom:0.42 * hp(INCREMENT),
+            height: hp( 6 *_8PT_),
+            marginBottom:hp(2*_8PT_),
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             borderBottomRightRadius: 15,
@@ -604,7 +606,7 @@ const styles = StyleSheet.create(
             justifyContent:'center',
         },
         input_tel_icon: {
-            width: 0.71* hp(INCREMENT), 
+            width: hp(5 * _8PT_),
             alignItems: "center",
             justifyContent: "center"
         },
@@ -612,24 +614,24 @@ const styles = StyleSheet.create(
             backgroundColor: 'white',
             flex:1,
             paddingLeft: 10,
-            height: 0.78 * hp(INCREMENT),
+            height: hp( 6 *_8PT_ - _4PT_),
             borderStyle: 'solid',
             borderColor: '#fcfcfc',
             borderWidth: 1,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
             borderBottomRightRadius: 12,
-            fontSize: 0.375 * hp(INCREMENT),
+            fontSize: hp(2 * _8PT_ + _4PT_),
             color:'#7A7A7A',
         },
-        input_place_container: {
+        input_place_destino_container: {
             backgroundColor: 'white',
             flexDirection: 'row',
-            width: '100%',
-            height: 0.892 * hp(INCREMENT),
+            width: wp("100%") - 6 * hp(2*_8PT_  ),
+            height: hp( 6 *_8PT_),
             paddingHorizontal: 3,
             paddingVertical: 3,
-            marginBottom:0.42 * hp(INCREMENT),
+            marginBottom:hp(2*_8PT_),
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             borderBottomRightRadius: 15,
@@ -638,20 +640,45 @@ const styles = StyleSheet.create(
             borderColor: '#b7b2b2ff',
             justifyContent: 'center',
             alignItems: 'center',
+            zIndex:3,
+            left:hp(3 * _8PT_ + 2*_4PT_),
+            top: 14 * hp(2* _8PT_ + _4PT_),
+            position:'absolute',
+        },
+        input_place_saida_container: {
+            backgroundColor: 'white',
+            flexDirection: 'row',
+            width: wp("100%") - 6 * hp(2*_8PT_  ),
+            height: hp( 6 *_8PT_),
+            paddingHorizontal: 3,
+            paddingVertical: 3,
+            marginBottom:hp(2*_8PT_),
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            borderBottomRightRadius: 15,
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderColor: '#b7b2b2ff',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex:3,
+            left:hp(3 * _8PT_ + 2*_4PT_),
+            top: 11 * hp(2* _8PT_ + _4PT_),
+            position:'absolute',
         },
         input_place: {
             backgroundColor: 'white',
             flex: 6,
             paddingLeft: 10,
-            height: 0.78 * hp(INCREMENT),
+            height: hp(6 *_8PT_ - _4PT_),
             borderStyle: 'solid',
             borderColor: '#fcfcfc',
             borderWidth: 1,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
             borderBottomRightRadius: 12,
-            fontSize: 0.375 * hp(INCREMENT),
-            color:'#7A7A7A'
+            fontSize: hp(2 * _8PT_ + _4PT_),    
+            color:'#7A7A7A',
         },
         map_container: {
             position: 'absolute',
@@ -661,17 +688,19 @@ const styles = StyleSheet.create(
             bottom: 0,
             justifyContent: 'flex-end',
             alignItems: 'center',
+            zIndex:-1
             
         },
         map_card: {
-            height:  3.5 * hp(INCREMENT),
+            height:  hp(40 * _8PT_),
             backgroundColor: 'white',
             borderRadius: 12,
-            elevation: 2,
-            padding: 0.14 * hp(INCREMENT),
+            padding:  hp(_8PT_),
             flexDirection: 'column',
-            marginTop:0.14 * hp(INCREMENT),
-            marginBottom:0.42 * hp(INCREMENT)
+            marginTop:hp(_8PT_),
+            marginBottom:hp(2*_8PT_),
+            zIndex:-1
+            
         },
         map: {
             position: 'absolute',
@@ -679,6 +708,7 @@ const styles = StyleSheet.create(
             left: 0,
             right: 0,
             bottom: 0,
+            
         },
         map_button_dest:{
             backgroundColor:"red",
@@ -689,8 +719,8 @@ const styles = StyleSheet.create(
             alignItems:"center",
             justifyContent:"center",
             position:"absolute",
-            bottom:0.14*hp(INCREMENT),
-            right:0.14*hp(INCREMENT)         
+            bottom:hp(_8PT_),
+            right:hp(_8PT_)         
         },
         map_button_origin:{
             backgroundColor:"red",
@@ -701,20 +731,20 @@ const styles = StyleSheet.create(
             alignItems:"center",
             justifyContent:"center",
             position:"absolute",
-            bottom:0.14*hp(INCREMENT),
-            left:0.14*hp(INCREMENT)        
+            bottom:hp(_8PT_),
+            left:hp(_8PT_)        
         },
         text: {
-            fontSize: 0.42 * hp(INCREMENT),
+            fontSize: hp(2 * _8PT_ + _4PT_ ),
             color: "#353535",
             fontWeight: "bold"
         },
         switch:{
             flexDirection: 'row-reverse',
-            marginBottom:0.42 * hp(INCREMENT), 
+            marginBottom: hp(_8PT_), 
         },
         text_switch: {
-            fontSize: 0.42 * hp(INCREMENT),
+            fontSize:  hp(2 * _8PT_ + _4PT_ ),
             color: "white",
             fontWeight: "bold"
         }

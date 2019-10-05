@@ -9,8 +9,11 @@ import {
   } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { NavigationActions } from "react-navigation";
-import { heightPercentageToDP } from 'react-native-responsive-screen';
+
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 export default class SideMenu extends Component{
 
@@ -25,7 +28,7 @@ export default class SideMenu extends Component{
                 
             <View style={styles.header} >
                 <View style={{flex:1,width:'100%', alignItems:'center', justifyContent:'center'}}>
-                        <Image style={{width: heightPercentageToDP("23%"), height: heightPercentageToDP("23%"), resizeMode: 'contain'}} source={require('../assets/logo.png')}/>    
+                        <Image style={{width: hp("23%"), height: hp("23%"), resizeMode: 'contain'}} source={require('../assets/logo.png')}/>    
                 </View>
               </View>
                 <View style={styles.body}> 

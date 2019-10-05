@@ -11,20 +11,23 @@ import {
     Alert,
     Image,    
     KeyboardAvoidingView,
+    BackHandler
   } from 'react-native';     
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 export default class Login extends Component{
 
     state = {email:'email',password:'password', logando:false};
 
     buttonLogin =   <View style={styles.button}>
-                         <Text style={{fontSize:hp("3%"), color:'white'}}>Entrar</Text>
+                         <Text style={{fontSize:hp(2*_8PT_+_4PT_), color:'white'}}>Entrar</Text>
                     </View> 
 
     activityIndicator = <View style={styles.button}>
-                            <ActivityIndicator size={hp("5%")} color="white" />
+                            <ActivityIndicator size={hp(3*_8PT_)} color="white" />
                         </View>
     
 
@@ -39,6 +42,28 @@ export default class Login extends Component{
         });
     }
     
+
+    onMainScreen = () => {
+       if(this.props.navigation.state.routeName =="Login"){
+            return true;
+        }   
+    }
+
+    handleBackPress = ()  => {
+        if (this.onMainScreen()) {
+            
+            BackHandler.exitApp();
+          }
+          return false;
+    }
+
+    componentDidMount = () => {
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+    }
+    componentWillUnmount() {
+        this.backHandler.remove()
+      }
+
     autenticar = (email, passwd) => {
         var login_email = email;
         this.setState({logando:true});
@@ -81,7 +106,6 @@ export default class Login extends Component{
 
     render(){
             return(
-
             <KeyboardAvoidingView style={styles.keyboard_view} behavior="position" enabled>
                 <View style={styles.body}>
                         <View style={styles.card}>
@@ -93,14 +117,14 @@ export default class Login extends Component{
                                 <TextInput keyboardType={'number-pad'} maxLength={11} style={styles.input} text='' onChangeText={(email)=>{this.setState({email:email})}} placeholder="Número de Matrícula"/>
                                 <TextInput secureTextEntry style={styles.input} text='' onChangeText={(passwd)=>{this.setState({password:passwd})}} placeholder="Senha"/>                        
                                 <TouchableOpacity onPress={()=>{this.props.navigation.navigate("RedefinicaoSenha")}}>
-                                    <Text style={{fontSize:hp("3%"), color:'white'}}>Esqueci a minha senha.</Text>
+                                    <Text style={{fontSize:hp(2*_8PT_+_4PT_), color:'white'}}>Esqueci a minha senha.</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={()=>{this.autenticar(this.state.email, this.state.password);}}>
                                     {!this.state.logando ? this.buttonLogin : this.activityIndicator}
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate("Register")}>
-                                    <Text style={{fontSize:hp("3%"), color:'white'}}>Não possui uma conta ?</Text>
-                                    <Text style={{fontSize:hp("3%"), color:'white'}}>Cadastrar</Text>
+                                    <Text style={{fontSize:hp(2*_8PT_+_4PT_), color:'white'}}>Não possui uma conta ?</Text>
+                                    <Text style={{fontSize:hp(2*_8PT_+_4PT_), color:'white'}}>Cadastrar</Text>
                                 </TouchableOpacity>                        
                             </View>
                         </View>
@@ -125,10 +149,10 @@ const styles =  StyleSheet.create(
         },
         card:{
             elevation:3,
-            height:hp("85%"),
+            height:hp("100%") - (2 * wp(2 * _8PT_ + _4PT_) + 10 * hp(_8PT_)),
             alignItems:'center',
             backgroundColor:'#4cb993ff',
-            margin:wp("3%"),
+            margin:wp(2 * _8PT_ + _4PT_),
             borderRadius:15,  
             borderStyle:'solid',
             borderWidth:1,
@@ -139,19 +163,19 @@ const styles =  StyleSheet.create(
             justifyContent:'flex-start',
             flex:8,
             width:'100%',
-            paddingVertical:hp("5%"),
-            paddingHorizontal:hp("5%"), 
+            paddingVertical:hp(3*_8PT_+_4PT_),
+            paddingHorizontal:hp(3*_8PT_+_4PT_),
             marginBottom:5,
             
         },
         button:{
-            height:hp("7%"),
+            height:hp(6*_8PT_),
             backgroundColor:'red',
             borderRadius:15,
             alignItems:'center',
             justifyContent:'center',
             elevation:2,
-            marginVertical:hp("1%"),
+            marginVertical:hp(_8PT_+_4PT_),
             borderStyle:'solid',
             borderWidth:1,
             borderColor:'#b7b2b2ff'
@@ -159,14 +183,14 @@ const styles =  StyleSheet.create(
         input:{
             backgroundColor:'white',
             width:'100%',
-            height:hp("7%"),
-            marginVertical:hp("1%"),
-            paddingHorizontal:wp("2%"),
-            paddingVertical:hp("1%"),
+            height:hp(6*_8PT_),
+            marginVertical:hp(_8PT_),
+            paddingHorizontal:hp(_8PT_+_4PT_),
+            paddingVertical:hp(_8PT_),
             borderTopLeftRadius:15,
             borderTopRightRadius:15,
             borderBottomRightRadius:15,
-            fontSize:hp("3%"),
+            fontSize:hp(2*_8PT_+_4PT_),
             borderStyle:'solid',
             borderWidth:1,
             borderColor:'#b7b2b2ff'

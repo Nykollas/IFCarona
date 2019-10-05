@@ -13,9 +13,13 @@ import {
     ActivityIndicator,
     
   } from 'react-native';
-import {Header} from 'react-navigation';
+import {Header} from 'react-navigation-stack';
 import bcrypt from 'react-native-bcrypt';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
+
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 export default class Register extends Component{
 
@@ -134,7 +138,7 @@ export default class Register extends Component{
                                         {!this.state.registering ? this.buttonRegister : this.activityIndicator}
                                     </TouchableOpacity>                  
                                 </View>
-                                    {dim_scr.height > 900 ?  
+                                    {hp('100%') > 900 ?  
                                         <View style={{flex:2,flexDirection:'row', alignItems:'center', justifyContent:'flex-end' }}>
                                              <View style={{flex:0.8}}/>
                                             <Image style={{width:100,height:100}}source={require('../assets/icon_register.png')}/>

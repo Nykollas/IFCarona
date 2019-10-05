@@ -13,55 +13,10 @@ import {
     ScrollView,
   } from 'react-native';
 
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
- // Responsivity block
-dim_scr =  Dimensions.get('screen');
-dim_win =  Dimensions.get('window');
-if(dim_scr.width < 900){
-    if(dim_scr.height > 1350){
-        card_height = Math.round(0.88 * this.dim_win.height);
-        margin_card = Math.round(0.02 * this.dim_win.width);
-        icon_size = Math.round(0.05* this.dim_win.width);
-        data_size = Math.round(0.045 * this.dim_win.width);
-        login_icon_h = Math.round(0.34 * this.dim_win.height);
-        login_icon_w = Math.round(0.5 * this.dim_win.width);
-    }else{
-        card_height = Math.round(1.1 * this.dim_win.height);
-        margin_card = Math.round(0.02 * this.dim_win.width);
-        icon_size = Math.round(0.05* this.dim_win.width);
-        data_size = Math.round(0.045 * this.dim_win.width);
-        login_icon_h = Math.round(0.34 * this.dim_win.height);
-        login_icon_w = Math.round(0.5 * this.dim_win.width);
-    }
-
-}else if(dim_scr.width < 1250){
-    if(dim_scr.height < 2450){
-        card_height = Math.round(0.88 * this.dim_win.height);
-        margin_card = Math.round(0.02 * this.dim_win.width);
-        icon_size = Math.round(0.05* this.dim_win.width);
-        data_size = Math.round(0.045 * this.dim_win.width);
-        login_icon_h = Math.round(0.34 * this.dim_win.height);
-        login_icon_w = Math.round(0.5 * this.dim_win.width);
-    }else{
-
-    }
-}else{
-    if(dim_scr < 2960){
-        card_height = Math.round(0.88 * this.dim_win.height);
-        margin_card = Math.round(0.02 * this.dim_win.width);
-        icon_size = Math.round(0.05* this.dim_win.width);
-        data_size = Math.round(0.045 * this.dim_win.width);
-        login_icon_h = Math.round(0.34 * this.dim_win.height);
-        login_icon_w = Math.round(0.5 * this.dim_win.width);
-    }else{
-        card_height = Math.round(0.88 * this.dim_win.height);
-        margin_card = Math.round(0.02 * this.dim_win.width);
-        icon_size = Math.round(0.05* this.dim_win.width);
-        data_size = Math.round(0.045 * this.dim_win.width);
-        login_icon_h = Math.round(0.34 * this.dim_win.height);
-        login_icon_w = Math.round(0.5 * this.dim_win.width);
-    }
-}
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 export default class Login extends Component{
 

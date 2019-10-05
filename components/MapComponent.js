@@ -9,8 +9,9 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import  API_KEY_GOOGLE_MAPS  from "../const/MapsKey";
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker } from "react-native-maps";
-import {Header} from 'react-navigation';
-INCREMENT = Number(Header.HEIGHT/hp('100%')*100).toFixed(2).concat("%");
+import {Header} from 'react-navigation-stack';
+
+_8PT_ = Number(Header.HEIGHT/hp('100%')*100).toFixed(2).concat("%");
 
 class MapComponent extends Component{
 
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'flex-end',
         alignItems: 'center',
+        
     },
     map_card:{
         flex:1,
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
         borderRadius:12, 
         elevation:5, 
         flexDirection:'column',
+        zIndex:-1
     },
     map: {
         position: 'absolute',
@@ -128,8 +131,8 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         position:"absolute",
-        bottom:0.14*hp(INCREMENT),
-        right:0.14*hp(INCREMENT)         
+        bottom:0.14*hp(_8PT_),
+        right:0.14*hp(_8PT_)         
     },
     map_button_origin:{
         backgroundColor:"red",
@@ -140,8 +143,8 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         position:"absolute",
-        bottom:0.14*hp(INCREMENT),
-        left:0.14*hp(INCREMENT)        
+        bottom:0.14*hp(_8PT_),
+        left:0.14*hp(_8PT_)        
     }
 });
 

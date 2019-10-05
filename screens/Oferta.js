@@ -13,13 +13,16 @@ import {
     Alert,
   } from 'react-native';
 import {systemWeights} from 'react-native-typography';
-import {withNavigation,Header} from 'react-navigation';
+import {withNavigation} from 'react-navigation';
+import Header from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import firebase from 'firebase';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Map from '../components/MapComponent';
 
-INCREMENT = Number(Header.HEIGHT/hp('100%')*100).toFixed(2).concat("%");
+
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 class Card extends Component{
     constructor(props){
@@ -34,7 +37,7 @@ class Card extends Component{
                         <Image style={styles.profile} source={{uri:this.props.avatar}}/>
                     </View>
                     <View style={styles.name}>
-                        <Text style={[systemWeights.bold, {fontSize:0.57*hp(INCREMENT), color:"#3C3C3C"}]}>{this.props.name}</Text>
+                        <Text style={[systemWeights.bold, {fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>{this.props.name}</Text>
                     </View>
                 </View>
                 <View style={[styles.line, {width:'100%'}]}/>
@@ -42,22 +45,22 @@ class Card extends Component{
                         <View style={styles.data_container}>
                             <View style={styles.data}>
                                 <View style={styles.data_title}>
-                                        <Icon name='person' color="#3C3C3C" size={0.57*hp(INCREMENT)} />
-                                        <Text adjustsFontSizeToFit style={[systemWeights.semibold,{fontSize:0.42*hp(INCREMENT), color:"#3C3C3C"}]}>Contato</Text>
+                                        <Icon name='person' color="#3C3C3C" size={ hp( 3 * _8PT_ + _4PT_)} />
+                                        <Text adjustsFontSizeToFit style={[systemWeights.semibold,{fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>Contato</Text>
                                 </View>
                                 <View style={styles.line}/>
                                 <View style={styles.data_value}>
-                                    <Text style={[systemWeights.semibold, {color:'#7A7A7A',fontSize:0.35*hp(INCREMENT)}]}>{this.props.contato}</Text>
+                                    <Text style={[systemWeights.semibold, {color:'#7A7A7A',fontSize:hp(2 * _8PT_ + _4PT_)}]}>{this.props.contato}</Text>
                                 </View>
                             </View>
                             <View style={styles.data}>
                                 <View style={styles.data_title}>
-                                    <Icon name='attach-money' color='#3C3C3C' size={0.57*hp(INCREMENT)} />
-                                    <Text style={[systemWeights.semibold,{fontSize:0.42*hp(INCREMENT), color:"#3C3C3C"}]}>Contribuição</Text>
+                                    <Icon name='attach-money' color='#3C3C3C' size={ hp( 3 * _8PT_ + _4PT_)} />
+                                    <Text style={[systemWeights.semibold,{fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>Contribuição</Text>
                                 </View>
                                 <View style={styles.line}/>
                                 <View style={[styles.data_value, {alignItems:"center"}]}>
-                                    <Text  adjustsFontSizeToFit style={[systemWeights.semibold,{color:'#7A7A7A',fontSize:0.35*hp(INCREMENT)}]}>{this.props.preco}</Text>
+                                    <Text  adjustsFontSizeToFit style={[systemWeights.semibold,{color:'#7A7A7A',fontSize:hp( 2 *_8PT_ + _4PT_)}]}>{this.props.preco}</Text>
                                 </View>
                             </View>
                         </View>
@@ -67,7 +70,7 @@ class Card extends Component{
                 </View>
                 <TouchableOpacity  style={styles.card_footer} onPress={ () => {var tel = this.props.contato; Linking.openURL("tel://"+tel);}}>
                     <View style={{padding:56}}>
-                        <Icon name='call' color='#FFF' size={hp('4%')} style={{marginRight:8}}/>
+                        <Icon name='call' color='#FFF' size={hp(3 * _8PT_)} style={{marginRight:8}}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -315,9 +318,9 @@ export default withNavigation(Oferta);
 
 const styles = StyleSheet.create({
     map_view:{
-        height:3.14 * hp(INCREMENT),
+        height:hp(20 * _8PT_),
         borderRadius:7,
-        marginBottom:0.42* hp(INCREMENT),
+        marginBottom:hp(_8PT_),
         backgroundColor:'#94ddadff',
         width:'90%',
     },
@@ -328,7 +331,7 @@ const styles = StyleSheet.create({
     card:{
         margin:wp("3%"),
         backgroundColor:'white',
-        height:10 * hp(INCREMENT),
+        height:hp(65 * _8PT_),
         borderRadius:15,
         borderStyle:'solid',
         borderWidth:0.3,
@@ -336,7 +339,7 @@ const styles = StyleSheet.create({
         elevation:3,
     },
     panel_header:{
-        height:3 * hp(INCREMENT),
+        height:hp(20 * _8PT_),
         alignItems:'center',
         justifyContent:'center',
         flexDirection:'row',
@@ -344,8 +347,8 @@ const styles = StyleSheet.create({
     profile:{
         borderRadius:100,
         margin:30,   
-        width:2.28 * hp(INCREMENT), 
-        height:2.28 * hp(INCREMENT), 
+        width:hp(18* _8PT_), 
+        height:hp(18  * _8PT_), 
     },
     name:{
         alignItems:'center',
@@ -357,40 +360,40 @@ const styles = StyleSheet.create({
         backgroundColor:'#b7b2b2ff',
     },
     panel_body:{
-        height:6*hp(INCREMENT),
+        height:hp(40* _8PT_),
         alignItems:'center',
     },
     data:{
         flex:1,
     },
     data_container:{
-        height:1.86*hp(INCREMENT),
+        height:hp( 15 * _8PT_),
         flexDirection:'row',    
         width:'90%',
         alignItems:'center',
         justifyContent:'space-between',
-        marginTop:0.42* hp(INCREMENT),      
+        marginTop:0.42* hp(_8PT_),      
     },
     data_title:{
         flexDirection:'row',
         justifyContent:'flex-start',
-        height:0.71 * hp(INCREMENT),
+        height:hp(3* _8PT_),
         width:"100%", 
         alignItems:"flex-end",
-        marginBottom:0.14 * hp(INCREMENT),
+        marginBottom:hp(_8PT_),
     },
     data_value:{
-        height:0.71 * hp(INCREMENT),
+        height:hp(_8PT_),
         alignItems:'flex-start',
         justifyContent:'center',
-        marginBottom:0.285 * hp(INCREMENT),
-        marginTop:0.14 * hp(INCREMENT),
+        marginBottom:hp(_8PT_),
+        marginTop:hp(2 * _8PT_),
     },
     card_footer:{
         backgroundColor:'#4cb993ff',
         borderBottomRightRadius:15,
         borderBottomLeftRadius:15,
-        height:1*hp(INCREMENT),
+        height:hp(5 * _8PT_),
         alignItems:'center', 
         justifyContent:'center',
         elevation:5

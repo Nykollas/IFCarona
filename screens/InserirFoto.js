@@ -9,9 +9,13 @@ import {
     TouchableOpacity,
     ActivityIndicator,
   } from 'react-native';
-  import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { withNavigation } from 'react-navigation';
+
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
+
 class InserirFoto extends Component{
 
     state = {image:null, uploading:false};

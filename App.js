@@ -1,5 +1,8 @@
+import 'react-native-gesture-handler';    
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator,  createAppContainer } from "react-navigation";
+import {createAppContainer } from "react-navigation";
+import {createBottomTabNavigator}  from 'react-navigation-tabs';
+import {createStackNavigator}  from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import {BottomTabBar} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -23,6 +26,7 @@ import {
   View,
   Text,
 } from 'react-native';
+
 
 const config = {
   apiKey: "AIzaSyAPZj3h71if9tP8p8ozynphv6qFhg7S3zU",

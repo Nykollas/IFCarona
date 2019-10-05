@@ -15,31 +15,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from 'firebase';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { regExpLiteral } from '@babel/types';
 
-dim_scr =  Dimensions.get('screen');
-dim_win =  Dimensions.get('window');
-if(dim_scr.width < 900){
-    if(dim_scr.height > 1350){
-
-    }else{
-        margin_over_edit_user = '10%';
-    }
-
-}else if(dim_scr.width < 1250){
-
-    if(dim_scr.height < 2450){
-
-    }else{
-
-    }
-}else{
-    if(dim_scr < 2960){
-
-    }else{
-
-    }
-}
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 class SideMenuLogado extends Component{
 

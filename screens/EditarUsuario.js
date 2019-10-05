@@ -9,63 +9,13 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
-    Dimensions,
     Image,
   } from 'react-native';
-
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import bcrypt from 'react-native-bcrypt';
 
-    // Responsivity block
-    dim_scr =  Dimensions.get('screen');
-    dim_win =  Dimensions.get('window');
-    if(dim_scr.width < 900){
-        if(dim_scr.height > 1350){
-            card_height = Math.round(1.4 * this.dim_win.height);
-            margin_card = Math.round(0.02 * this.dim_win.width);
-            icon_size = Math.round(0.05* this.dim_win.width);
-            data_size = Math.round(0.045 * this.dim_win.width);
-            login_icon_h = Math.round(0.34 * this.dim_win.height);
-            login_icon_w = Math.round(0.5 * this.dim_win.width);
-        }else{
-            card_height = Math.round(1.4 * this.dim_win.height);
-            margin_card = Math.round(0.02 * this.dim_win.width);
-            icon_size = Math.round(0.05* this.dim_win.width);
-            data_size = Math.round(0.045 * this.dim_win.width);
-            login_icon_h = Math.round(0.34 * this.dim_win.height);
-            login_icon_w = Math.round(0.5 * this.dim_win.width);
-        }
-
-    }else if(dim_scr.width < 1250){
-
-        if(dim_scr.height < 2450){
-            card_height = Math.round(0.88 * this.dim_win.height);
-            margin_card = Math.round(0.02 * this.dim_win.width);
-            icon_size = Math.round(0.05* this.dim_win.width);
-            data_size = Math.round(0.045 * this.dim_win.width);
-            login_icon_h = Math.round(0.34 * this.dim_win.height);
-            login_icon_w = Math.round(0.5 * this.dim_win.width);
-        }else{
-
-        }
-    }else{
-        if(dim_scr < 2960){
-            card_height = Math.round(0.88 * this.dim_win.height);
-            margin_card = Math.round(0.02 * this.dim_win.width);
-            icon_size = Math.round(0.05* this.dim_win.width);
-            data_size = Math.round(0.045 * this.dim_win.width);
-            login_icon_h = Math.round(0.34 * this.dim_win.height);
-            login_icon_w = Math.round(0.5 * this.dim_win.width);
-        }else{
-            card_height = Math.round(0.88 * this.dim_win.height);
-            margin_card = Math.round(0.02 * this.dim_win.width);
-            icon_size = Math.round(0.05* this.dim_win.width);
-            data_size = Math.round(0.045 * this.dim_win.width);
-            login_icon_h = Math.round(0.34 * this.dim_win.height);
-            login_icon_w = Math.round(0.5 * this.dim_win.width);
-        }
-    }
-
-
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 export default class Register extends Component{
 
@@ -184,10 +134,10 @@ export default class Register extends Component{
         return(
             <View style={styles.body}>  
                 <ScrollView style={{flex:1}}>
-                    <View style={{height:1000}}>
+                    <View style={{height:hp("120%")}}>
                         <View style={styles.card}>
                             <View style={styles.title}>
-                                <Text style={{fontSize:22, color:'white'}}>Editar Usuário</Text>
+                                <Text style={{fontSize:hp(2* _8PT_ + 2*_4PT_), color:'white'}}>Editar Usuário</Text>
                             </View>
                             <View style={styles.form}>
                                 <View style={styles.section_title}>
@@ -206,7 +156,7 @@ export default class Register extends Component{
                                         <Text style={{fontSize:20, color:'white'}}>Editar Dados</Text>
                                     </View>
                                 </TouchableOpacity> 
-                                <View style={[styles.section_title, {marginTop:40   }]}>
+                                <View style={[styles.section_title, {marginTop:20  }]}>
                                     <Text style={{color:'white', fontSize:20}}> Edição de senha </Text>
                                     <View style={styles.line}/>
                                 </View>  
@@ -237,7 +187,6 @@ export default class Register extends Component{
 }
 
 
-
 const styles =  StyleSheet.create(
     {
         body:{
@@ -246,50 +195,50 @@ const styles =  StyleSheet.create(
         },
         card:{
             elevation:3,
-            height:card_height,
+            height:hp(100 * _8PT_),
             alignItems:'center',
             backgroundColor:'#4cb993ff',
-            margin:margin_card,
+            margin:wp(2 * _8PT_ + _4PT_),
             borderRadius:15,
             borderStyle:'solid',
             borderWidth:1,
             borderColor:'#b7b2b2ff'      
         },
        title:{
-            marginTop:30,
-            flex:1,
+            marginVertical:hp(5*_8PT_+_4PT_),
             justifyContent:'center',
         },
         form:{
             justifyContent:'flex-start',
             flex:5,
             width:'100%',
-            padding:20,
-            marginBottom:5,
+            paddingHorizontal:hp(2* _8PT_ + _4PT_),
+            paddingBottom:hp(2* _8PT_ + _4PT_),
+            marginBottom:hp(_4PT_),
             
         },
         button:{
-            height:50,
+            height:hp(6*_8PT_),
             backgroundColor:'red',
             borderRadius:15,
             alignItems:'center',
             justifyContent:'center',
             elevation:2,
-            marginVertical:10,
+            marginBottom:hp(2*_8PT_ + _4PT_),
             borderStyle:'solid',
             borderWidth:1,
             borderColor:'#b7b2b2ff'
-        },
+        },  
         input:{
             backgroundColor:'white',
             width:'100%',
-            height:50,
-            marginVertical:10,
-            padding:10,
+            height:hp(6 * _8PT_),
+            marginBottom:hp(2*_8PT_ + _4PT_),
+            padding:hp(_8PT_ + _4PT_),
             borderTopLeftRadius:15,
             borderTopRightRadius:15,
             borderBottomRightRadius:15,
-            fontSize:22,
+            fontSize:hp(2*_8PT_+_4PT_),
             borderStyle:'solid',
             borderWidth:1,
             borderColor:'#b7b2b2ff',
@@ -300,14 +249,10 @@ const styles =  StyleSheet.create(
             opacity:0.8,
             width:'100%',
             height:1,
-            marginVertical:5,
+            marginVertical:hp(2*_4PT_),
         },
         section_title:{
-            marginVertical:5,
+            marginBottom:hp(_4PT_),
         }
-
-
-    
-
     }
 );

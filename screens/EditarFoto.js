@@ -10,10 +10,11 @@ import {
     Alert,
 
 } from 'react-native';
-
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
 import ImagePicker from 'react-native-image-picker';
+
+const _8PT_ = 100/(hp("100%")/8);
+const _4PT_ = (100/(hp("100%")/8))/2;
 
 export default class Login extends Component{
 
