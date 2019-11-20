@@ -1,4 +1,4 @@
-package com.ifcarona;
+package com.nykollas.ifride;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

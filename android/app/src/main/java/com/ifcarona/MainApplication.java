@@ -1,4 +1,4 @@
-package com.ifcarona;
+package com.nykollas.ifride;
 
 import android.app.Application;
 import android.content.Context;

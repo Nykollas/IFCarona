@@ -13,12 +13,13 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import {systemWeights} from 'react-native-typography';
+import { Header } from 'react-navigation-stack';
 import MapView, { Marker } from "react-native-maps";
+import NumericInput from 'react-native-numeric-input';
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapViewDirections from 'react-native-maps-directions';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import SwitchSelector from 'react-native-switch-selector';
 import firebase from 'firebase';
 
 
@@ -29,7 +30,7 @@ const API_KEY_GOOGLE_MAPS = "AIzaSyDNlio27LqraNed4EAIjmjBiuEQ46UjyIg";
 export default class MinhaPostagem extends Component {
 
     state = {
-        vehicle: '1',
+        preco: 3,
         contato: '',    
         prev_contato: '',
         desc: '',
@@ -43,23 +44,13 @@ export default class MinhaPostagem extends Component {
         region: null,
         switch_text: "Ofereço carona",
     }
-
     erro_in_add = 0;
-
     initialRegion = {
         latitude: this.state.start.latitude,
         longitude: this.state.start.longitude,
         latitudeDelta: 0.003,
         longitudeDelta: 0.0011,
     }
-
-    options = [
-        {activeColor:'red', label: 'Moto', value: '1' },
-        {activeColor:'red', label: 'Carro', value: '2' },
-        {activeColor:'red', label: 'Van', value: '3' }
-    ];
-    
-
     deformatContato(string) {
         arr = new Array(200);
         var counter = 0
@@ -71,7 +62,6 @@ export default class MinhaPostagem extends Component {
         }
         return arr.join('');
     }
-
     formatContato(string, prev) {
 
         var counter = 0;
@@ -89,7 +79,7 @@ export default class MinhaPostagem extends Component {
                         counter++;
                     }
                 }
-                let new_str = arr.join('');
+                new_str = arr.join('');
                 return new_str;
             }
         } else {
@@ -123,14 +113,24 @@ export default class MinhaPostagem extends Component {
                         counter++;
                     }
                 }
-                let new_str = arr.join('');
+                new_str = arr.join('');
                 return new_str;
             }
         }
     }
 
     validateDados = () => {
-       if (this.state.contato == null) {
+        if (this.state.preco == null) {
+            Alert.alert(
+                '',
+                "Preço indefinido",
+                [
+                    { text: 'OK', },
+                ],
+                { cancelable: false },
+            );
+            return 0;
+        } else if (this.state.contato == null) {
             Alert.alert(
                 '',
                 "WhatsApp inválido",
@@ -142,7 +142,7 @@ export default class MinhaPostagem extends Component {
         }
 
         var con_len = this.state.contato.length;
-        
+        var price_len = this.state.preco.length;
         if (con_len != 11) {
             Alert.alert(
                 '',
@@ -168,6 +168,32 @@ export default class MinhaPostagem extends Component {
                 }
             }
         }
+        for (var x = 0; x < price_len; x++) {
+            if (isNaN(parseInt(this.state.preco[x], 10))) {
+                Alert.alert(
+                    '',
+                    "Whatsapp inválido",
+                    [
+                        { text: "OK" },
+                    ],
+                    { cancelable: false },
+                );
+                return 0;
+            }
+        }
+        if (this.state.preco == '') {
+            Alert.alert(
+                '',
+                "Preço inválido",
+                [
+                    { text: "OK" },
+                ],
+                { cancelable: false },
+            );
+            return 0;
+
+        }
+
         return 1;
     }
 
@@ -181,7 +207,7 @@ export default class MinhaPostagem extends Component {
             this.setState({
                 start: snapshot.val().start,
                 end: snapshot.val().end,
-                vehicle: snapshot.val().vehicle,
+                preco: snapshot.val().preco,
                 contato: snapshot.val().contato,
                 procura: snapshot.val().procura,
                 descr_end: snapshot.val().descr_end,
@@ -199,13 +225,13 @@ export default class MinhaPostagem extends Component {
         var userId = firebase.auth().currentUser.uid;
         firebase.database().ref('user/' + userId).on('value',
             (snapshot) => {
-                let nome = snapshot.val().nome;
-                let avatar = snapshot.val().avatar;
+                nome = snapshot.val().nome;
+                avatar = snapshot.val().avatar;
                 firebase.database().ref('ofertas/' + userId)
                     .set({
                         start: this.state.start,
                         end: this.state.end,
-                        vehicle: this.state.vehicle,
+                        preco: this.state.preco,
                         nome: nome, contato: this.state.contato,
                         avatar: avatar,
                         procura: this.state.procura,
@@ -320,13 +346,12 @@ export default class MinhaPostagem extends Component {
     componentDidMount = () => {
         this.getOferta();
     }
-
     setRefForNumericInput = () => {
-        if (this._vehicle_input == null) {
+        if (this._preco_input == null) {
 
 
         } else {
-            this._vehicle_input.ref._saida_input = this._saida_input
+            this._preco_input.ref._saida_input = this._saida_input
         }
     }
 
@@ -346,7 +371,7 @@ export default class MinhaPostagem extends Component {
                                     <Icon name="whatsapp" size={hp( 3 * _8PT_ )} color='#353535' />
                                 </View>
                                 <TextInput returnKeyType={"next"}
-                                    onSubmitEditing={() => this._vehicle_input.ref.focus()}
+                                    onSubmitEditing={() => this._preco_input.ref.focus()}
                                     maxLength={14}
                                     keyboardType='number-pad'
                                     style={styles.input_tel}
@@ -362,10 +387,29 @@ export default class MinhaPostagem extends Component {
                                         }))
                                     }} />
                             </View>
-                            <View style={[{ flexDirection: 'row' }, styles.input_vehicle_container]}>
-                                <View style={styles.input_vehicle}>
-                                    <SwitchSelector textColor={'#7A7A7A'} fontSize={16} options={this.options} initial={this.state.vehicle} onPress={value =>  this.setState({vehicle:value})} />
+                            <View style={[{ flexDirection: 'row' }, styles.input_price_container]}>
+                                <View style={styles.input_price_icon}>
+                                    <Text style={[styles.input_price_icon_text, systemWeights.semibold]}>R$</Text>
                                 </View>
+                                <NumericInput
+                                    ref={component => this._preco_input = component}
+                                    containerStyle={styles.input_price}
+                                    stringValue={this.state.preco.toString()}
+                                    value={this.state.preco}
+                                    onChange={(preco) => { this.setState({ preco: preco }); console.log(this.state.preco) }}
+                                    minValue={0}
+                                    maxValue={200}
+                                    type='up-down'
+                                    iconSize={25}
+                                    step={0.1}
+                                    valueType='real'
+                                    rounded
+                                    inputStyle={styles.input_price_text}
+                                    textColor='#353535'
+                                    upDownButtonsBackgroundColor="white"
+                                    upDownStyle={{ borderTopRightRadius: 30, borderBottomRightRadius: 12 }}
+                                    iconStyle={styles.input_price_arrows}
+                                />
                             </View>
                             <View style={styles.input_place_saida_container}>
                                 <TextInput
@@ -503,12 +547,15 @@ const styles = StyleSheet.create(
             opacity: 0.7,
             flexDirection: 'row',
         },
-        input_vehicle_container: {
+        input_price_container: {
             flexDirection:'row',
             backgroundColor: '#dbdbdb',
-            width: '100%',
+            width: '50%',
+            height: hp( 6 *_8PT_),
             marginBottom:hp(2*_8PT_),
-            borderRadius: 24,
+            borderTopLeftRadius: 15,
+            borderTopRightRadius: 15,
+            borderBottomRightRadius: 15,
             borderStyle: 'solid',
             borderWidth: 1,
             borderColor: '#b7b2b2ff',
@@ -516,32 +563,32 @@ const styles = StyleSheet.create(
             justifyContent:'center',
             paddingRight:-1,
         },
-        input_vehicle: {
+        input_price: {
             flex:1,
             backgroundColor: 'white',
-            
-            borderRadius: 24,
-
+            height: hp( 6 * _8PT_ - _4PT_),
+            borderBottomLeftRadius: 0,
         },
-        input_vehicle_text: {
+        input_price_text: {
             fontSize:hp(2 * _8PT_ + _4PT_ ),
             color:'#7A7A7A'
         },
-        input_vehicle_arrows: {
+        input_price_arrows: {
             color: '#AAAAAA',
         },
-        input_vehicle_icon:{
+        input_price_icon:{
             width: hp(5 * _8PT_),
             alignItems: "center",
             justifyContent: "center"
         },
-        input_vehicle_icon_text:{
+        input_price_icon_text:{
             alignItems: "center",
             justifyContent: "center",
             fontSize:hp(2 * _8PT_ + _4PT_ ),
             fontWeight:'bold',
             color:'#353535'
         },
+        
         input_tel_container: {
             backgroundColor: '#dbdbdb',
             width: '100%',

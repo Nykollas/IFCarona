@@ -16,6 +16,8 @@ import {systemWeights} from 'react-native-typography';
 import {withNavigation} from 'react-navigation';
 import Header from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconFAS5 from 'react-native-vector-icons/FontAwesome5';
 import firebase from 'firebase';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Map from '../components/MapComponent';
@@ -28,6 +30,17 @@ class Card extends Component{
     constructor(props){
         super(props);
     }
+
+    getIcon = () => {
+        console.log(this.props.vehicle)
+        if(this.props.vehicle && this.props.vehicle == '1'){
+            return(<IconFAS5 size={32} name="motorcycle" color={"#3C3C3C"}></IconFAS5>);
+        }else if(this.props.vehicle && this.props.vehicle == '2'){
+            return(<Icon size={32} name="directions-car" color={"#3C3C3C"}></Icon>);
+        }else{
+            return(<IconCommunity size={32} name="van-passenger" color={"#3C3C3C"}></IconCommunity>);
+        } 
+    }  
 
     render(){
         return(
@@ -50,17 +63,20 @@ class Card extends Component{
                                 </View>
                                 <View style={styles.line}/>
                                 <View style={styles.data_value}>
-                                    <Text style={[systemWeights.semibold, {color:'#7A7A7A',fontSize:hp(2 * _8PT_ + _4PT_)}]}>{this.props.contato}</Text>
+                                    <Text style={[systemWeights.semibold, { marginTop:hp(2*_8PT_), color:'#7A7A7A',fontSize:hp(2 * _8PT_ + _4PT_)}]}>{this.props.contato}</Text>
                                 </View>
                             </View>
                             <View style={styles.data}>
                                 <View style={styles.data_title}>
                                     <Icon name='attach-money' color='#3C3C3C' size={ hp( 3 * _8PT_ + _4PT_)} />
-                                    <Text style={[systemWeights.semibold,{fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>Contribuição</Text>
+                                    <Text style={[systemWeights.semibold,{fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>Veículo</Text>
                                 </View>
                                 <View style={styles.line}/>
                                 <View style={[styles.data_value, {alignItems:"center"}]}>
-                                    <Text  adjustsFontSizeToFit style={[systemWeights.semibold,{color:'#7A7A7A',fontSize:hp( 2 *_8PT_ + _4PT_)}]}>{this.props.preco}</Text>
+                                    <View  style={{height:hp(3 * _8PT_)}}>{
+                                        this.getIcon()
+                                        }
+                                    </View>
                                 </View>
                             </View>
                         </View>
@@ -114,7 +130,7 @@ class Oferta extends Component {
                                 offer_arr.push(
                                     {   nome:user.val().nome,
                                         contato:user.val().contato,
-                                        preco:user.val().preco,
+                                        vehicle:user.val().vehicle,
                                         desc:user.val().desc,
                                         avatar:downloader.response,
                                         end:user.val().end,
@@ -132,7 +148,7 @@ class Oferta extends Component {
                                         return;     
                                     }
                 
-                                    if(offer_arr[0].contato == undefined && offer_arr[0].preco == undefined  && offer_arr[0].nome == undefined){
+                                    if(offer_arr[0].contato == undefined && offer_arr[0].vehicle == undefined  && offer_arr[0].nome == undefined){
                 
                                         console.log("Não existem ofertas");
                 
@@ -168,7 +184,7 @@ class Oferta extends Component {
         )
         
     };
-
+/**
     formatPreco = (preco) => {
         var preco = Number(preco);
         var cifrao = "R$ ";
@@ -183,7 +199,7 @@ class Oferta extends Component {
 
         return cifrao + preco;
     }
-
+*/
     formatName = (string) => {
         
         if(string == ""){
@@ -214,7 +230,7 @@ class Oferta extends Component {
        var nome = item.nome;
        var contato =  item.contato;
        var avatar =  item.avatar;
-       var preco =  item.preco;
+       var vehicle =  item.vehicle;
        var desc =  item.desc;
        var start = item.start;
        var end = item.end;
@@ -244,7 +260,7 @@ class Oferta extends Component {
 
        return (<Card name={this.formatName(nome)}
                      avatar={avatar}
-                     preco={this.formatPreco(preco)}
+                     vehicle={vehicle}
                      contato={new_str} 
                      desc={desc} 
                      start={start}

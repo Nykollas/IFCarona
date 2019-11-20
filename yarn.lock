@@ -6034,6 +6034,11 @@ react-native-safe-area-view@^0.14.1, react-native-safe-area-view@^0.14.6:
   dependencies:
     debounce "^1.2.0"
 
+react-native-switch-selector@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-switch-selector/-/react-native-switch-selector-2.0.0.tgz#88161d5b46a00535b00290a7e65d71e236961fb1"
+  integrity sha512-PIT+42gf62JdXjsfSP98JAD/ijq/NdvvW55U7HxlvrBi9MvU7LUUmR/5AMRfvKUPqTRxZ9i0ZTheginOXjxxjw==
+
 react-native-tab-view@^2.9.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.10.0.tgz#5e249e5650502010013449ffd4e5edc18a95364b"

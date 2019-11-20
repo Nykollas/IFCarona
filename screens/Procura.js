@@ -55,7 +55,7 @@ class Card extends Component{
                             <View style={styles.data}>
                                 <View style={styles.data_title}>
                                     <Icon name='attach-money' color='#3C3C3C' size={ hp( 3 * _8PT_ + _4PT_)} />
-                                    <Text style={[systemWeights.semibold,{fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>Contribuição</Text>
+                                    <Text style={[systemWeights.semibold,{fontSize:hp(3 * _8PT_), color:"#3C3C3C"}]}>Veículo</Text>
                                 </View>
                                 <View style={styles.line}/>
                                 <View style={[styles.data_value, {alignItems:"center"}]}>

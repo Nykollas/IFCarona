@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     elevation:3,
   },
 });
-
 //------------------------------------------------------------------------
 const ProcuraNavigator = createStackNavigator(
   {
@@ -203,20 +202,21 @@ const TabNavigator = createBottomTabNavigator(
         let iconName;
         if (routeName === 'Procura') {
           if(tintColor=="#4cb993ff"){
-            return  <View style={{height:"100%", width:"100%", padding:hp("0.5%")}}>
-                        <Image style={{height:"100%", width:"100%"}} resizeMode={"contain"}  source={require("./assets/ride.png")}/>
-                    </View>;  
+            return  <View style={{ flexDirection:'row',height:"100%", alignItems:'center', jusitifyContent:'center',width:"50%", padding:hp("0.5%")}}>
+                      <Image style={{height:hp("3.5%"),width:hp("3.5%") }} resizeMode={"contain"}  source={require("./assets/ride.png")}/>
+                      <Text style={{ fontSize:18, fontWeight:'bold',color:'#A1A1A1' }}>Procuras</Text>
+                    </View>
           }else{
-            return <View style={{height:"100%", width:"100%", padding:hp("0.5%")}}>
-                      <Image resizeMode={"contain"} style={{height:"100%", width:"100%", }} source={require("./assets/ride_unactive.png")}/>
-                    </View>;  
+            return <View style={{flexDirection:'row',alignItems:'center', justifyContent:'center',height:"100%", width:"50%", padding:hp("0.5%")}}>
+                      <Image style={{height:hp("3.5%"),width:hp("3.5%")}} resizeMode={"contain"}  source={require("./assets/ride_unactive.png")}/>
+                      <Text style={{fontSize:18, fontWeight:'bold',color:'#A1A1A1' }}>Procuras</Text>
+                    </View>
           }
         } else if (routeName === 'Oferta') {
           iconName = `directions-car`;
-          return <View style={{height:"100%", width:"100%", padding:hp("0.5%")}}> 
-                    <Text style={{width:"100%", height:"100%", textAlignVertical:'center', textAlign:'center'}}>
-                      <Icon size={hp("5%")} name={iconName} color={tintColor} />;  
-                    </Text> 
+          return <View style={{flexDirection:'row', alignItems:'center', jusitifyContent:'center',height:"100%", width:"50%", marginHorizontal:20, padding:hp("0.5%")}}> 
+                      <Icon size={hp("4%")} name={iconName} color={tintColor} />
+                      <Text style={{fontSize:18, fontWeight:'bold',color:'#A1A1A1' }}>Ofertas</Text>
                   </View>
         }else{
           return <View></View>;
@@ -224,8 +224,8 @@ const TabNavigator = createBottomTabNavigator(
       },
       tabBarComponent: props => {
         return <BottomTabBar style={{borderTopColor:'#AAAAAA',
-                                        borderRightWidth:1, 
-                                        borderRightColor:"#AAAAAA", 
+                                        borderRightWidth:2, 
+                                        borderRightColor:"#101010", 
                                         elevation:3, 
                                         padding:wp("1%")}
                                       } 
