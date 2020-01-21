@@ -17,7 +17,7 @@ class MapComponent extends Component{
 
     constructor(props){
         super(props);
-        console.log(API_KEY_GOOGLE_MAPS);        
+        
     }
 
     state = {
@@ -27,17 +27,18 @@ class MapComponent extends Component{
     }
 
     goToOriginRegion = () =>{
-        region = {
+        let region = {
             latitude: this.state.start.latitude,
             longitude: this.state.start.longitude,
             latitudeDelta: 0.003,
             longitudeDelta: 0.0011,
         }
-       this.setState({region:region});
+        //this.mapViewComponent.animateToRegion(region);
+        this.setState({region:region});
     }
 
     goToDestRegion = () =>{
-        region = {
+        let region = {
             latitude: this.state.end.latitude,
             longitude: this.state.end.longitude,
             latitudeDelta: 0.003,
@@ -52,22 +53,15 @@ class MapComponent extends Component{
             start:this.props.start,
             end:this.props.end,
         });
-        initialRegion = {
-            latitude: this.state.start.latitude,
-            longitude: this.state.start.longitude,
-            latitudeDelta: 0.003,
-            longitudeDelta: 0.0011,
-        }
-        this.goToOriginRegion();
+        setTimeout(this.goToOriginRegion, 500);
     }
 
     render = () =>{
         return(
             <View style={styles.map_card}>
             <View style={styles.map_container}>
-                    <MapView style={styles.map} initialRegion={this.initialRegion} region={this.state.region}>
+                    <MapView ref={(component) => this.mapViewComponent = component} style={styles.map} initialRegion={this.state.region} region={this.state.region}>
                         {this.state.start ? <Marker coordinate={this.state.start} title={"Saída"} /> : <View></View>}
-
                         {this.state.start && this.state.end ? 
                         <MapViewDirections origin={this.state.start} 
                                         destination={this.state.end} 
@@ -75,9 +69,7 @@ class MapComponent extends Component{
                                         strokeWidth={3}
                                         strokeColor="red"/> : 
                         <ActivityIndicator size={hp("8%")} color="#AAAAAA"/>}
-
                         {this.state.start ? <Marker coordinate={this.state.end} title={"Destino"} /> : <View></View>}
-
                     </MapView>
                     <TouchableOpacity style={styles.map_button_origin} onPress={this.goToOriginRegion}>
                         <View >
@@ -92,8 +84,7 @@ class MapComponent extends Component{
             </View>
         </View>
         );
-    }
-
+    }   
 }
 
 const styles = StyleSheet.create({

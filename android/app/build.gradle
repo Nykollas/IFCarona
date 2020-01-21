@@ -81,7 +81,8 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-	
+
+
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -192,8 +193,12 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-view-overflow')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    //From react-native-view-overflow
+    compile project(':react-native-view-overflow')
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

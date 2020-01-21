@@ -13,6 +13,7 @@ import {
   } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import bcrypt from 'react-native-bcrypt';
+import ImagePicker from 'react-native-image-picker';
 
 const _8PT_ = 100/(hp("100%")/8);
 const _4PT_ = (100/(hp("100%")/8))/2;
@@ -51,9 +52,6 @@ export default class Register extends Component{
 
         firebase.database().ref('user/' + userId).on('value', (snapshot) => {
             password_actual_hash = snapshot.val().senha;
-            console.log(password_actual);
-            console.log(new_password);
-            console.log(password_actual_hash);
             if(bcrypt.compareSync(password_actual, password_actual_hash)){
                 new_hash = bcrypt.hashSync(new_password, 8);
                 firebase.auth().currentUser.updatePassword(new_password).then(() =>

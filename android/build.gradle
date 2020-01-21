@@ -36,3 +36,13 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+
+subprojects { project ->
+    if (project.name.contains('react-native-view-overflow')) {
+        buildscript {
+            repositories {
+                maven { url "https://maven.google.com" }
+            }
+        }
+    }
+}	

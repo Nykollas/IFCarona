@@ -10,6 +10,7 @@ import {
     ActivityIndicator,
   } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import ImagePicker from 'react-native-image-picker';
 
 import { withNavigation } from 'react-navigation';
 
@@ -41,9 +42,7 @@ class InserirFoto extends Component{
 
     adicionarImagem =  async () =>{
         ImagePicker.showImagePicker(this.imagePickerOptions, (response) => {
-            console.log('Response = ', response);
-          
-            if (response.didCancel) {
+                      if (response.didCancel) {
                 console.log('Usuário cancelou a adição de imagem');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
@@ -105,6 +104,9 @@ class InserirFoto extends Component{
         const ref = firebase.storage().ref('avatars/'+uid+'/image.jpeg');
         var uploadTask = ref.put(imageBlob, { contentType: 'image/jpg' });
         uploadTask.on('state_changed', this.uploadMonitor, this.uploadErrorCallback, this.uploadSucessfulCallback);
+        ref.getDownloadURL().then(url => {
+            firebase.database().ref("ofertas/"+uid+"/avatar").set(url);
+        })
             
         
     }

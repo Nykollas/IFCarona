@@ -6,6 +6,7 @@ import {createStackNavigator}  from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import {BottomTabBar} from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import SideMenu from './screens/SideMenu';
@@ -17,6 +18,7 @@ import RedefinicaoSenha from './screens/RedefinicaoSenha';
 import Procura from './screens/Procura';
 import Oferta from './screens/Oferta';
 import MinhaPostagem from './screens/MinhaPostagem';
+import ModalFilter from "./screens/ModalFilter";
 import firebase from 'firebase';
 import Geocoder from "react-native-geocoding";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -25,17 +27,27 @@ import {
   Image,
   View,
   Text,
+  Keyboard
 } from 'react-native';
+console. disableYellowBox = true;
+
+
+
+
+
 
 
 const config = {
-  apiKey: "AIzaSyAPZj3h71if9tP8p8ozynphv6qFhg7S3zU",
-  authDomain: "ifride.firebaseapp.com",
-  databaseURL: "https://ifride.firebaseio.com/",
-  storageBucket: "gs://ifride.appspot.com/"
-};          
+    apiKey: "AIzaSyAPZj3h71if9tP8p8ozynphv6qFhg7S3zU",
+    authDomain: "ifride.firebaseapp.com",
+    databaseURL: "https://ifride.firebaseio.com/",
+    storageBucket: "gs://ifride.appspot.com/"
+  };          
+  
+  if (!firebase.apps.length) {
+    firebase.initializeApp(config);
+  }
 
-firebase.initializeApp(config);
 Geocoder.init("AIzaSyDNlio27LqraNed4EAIjmjBiuEQ46UjyIg"); 
 const styles = StyleSheet.create({
   header: {
@@ -58,6 +70,11 @@ const ProcuraNavigator = createStackNavigator(
       headerTitle:"IFCarona",
       headerTitleStyle:{fontWeight:'bold'},
       headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
+      headerRight:<IconCommunity.Button  name="filter" size={30} backgroundColor="#4cb993ff" onPress={() => { 
+        
+        navigation.navigate("Procura", {modalOpen:true});
+        }
+      }/>
     }),
   }
 );
@@ -73,6 +90,11 @@ const OfertaNavigator = createStackNavigator(
       headerTitle:"IFCarona",
       headerTitleStyle:{fontWeight:'bold'},
       headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
+      headerRight:<IconCommunity.Button  name="filter" size={30} backgroundColor="#4cb993ff" onPress={() => { 
+        console.log("Navegando");
+        navigation.navigate("Oferta", {modalOpen:true});
+        }
+      }/>
     }),
   }
 );
@@ -89,8 +111,13 @@ const EditarUsuarioNavigator = createStackNavigator(
       headerStyle: styles.header,
       headerTitle:"IFCarona",
       headerTitleStyle:{fontWeight:'bold'},
-      headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
-    }),
+      headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={() => { 
+                    Keyboard.dismiss();
+                    setTimeout(() => navigation.openDrawer(),400)
+                  }
+                }/>,
+   
+      }),
   }
 );
 
@@ -108,7 +135,14 @@ const LoginNavigator = createStackNavigator(
     headerStyle: styles.header,
     headerTitle:"IFCarona",
     headerTitleStyle:{fontWeight:'bold'},
-    headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
+    headerLeft:<Icon.Button  name="menu" 
+                             size={30} 
+                             backgroundColor="#4cb993ff" 
+                             onPress={() => { 
+                                              Keyboard.dismiss();
+                                              setTimeout(() => navigation.openDrawer(),400)
+                                            }
+                                      }/>,
   }),
 }
 )
@@ -124,7 +158,11 @@ const RegisterNavigator = createStackNavigator(
     headerStyle: styles.header,
     headerTitle:"IFCarona",
     headerTitleStyle:{fontWeight:'bold'},
-    headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
+    headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={() => { 
+      Keyboard.dismiss();
+      setTimeout(() => navigation.openDrawer(),400)
+    }
+}/>,
   }),
 })
 
@@ -153,7 +191,11 @@ const MinhaPostagemNavigator = createStackNavigator(
       headerStyle: styles.header,
       headerTitle:"IFCarona",
       headerTitleStyle:{fontWeight:'bold'},
-      headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
+      headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff"  onPress={() => { 
+        Keyboard.dismiss();
+        setTimeout(() => navigation.openDrawer(),400)
+      }
+}/>,
     }),
   }
 )
@@ -254,11 +296,13 @@ const LoggedDrawerNavigator = createDrawerNavigator(
     //Opções do cabeçalho da Home
     initialRouteName: "Home",
     contentComponent: SideMenuLogado,
+    keyboardDismissMode: 'on-drag',
     defaultNavigationOptions:({navigation}) => ({
       headerTintColor: '#fff',
       headerStyle: styles.header,
       headerTitle:"IFCarona",
       headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#4cb993ff" onPress={navigation.openDrawer}/>,
+      
     }),
   }
 );
@@ -279,7 +323,7 @@ var DrawerNavigator = createDrawerNavigator(
       headerTintColor: '#fff',
       headerStyle: styles.header,
       headerTitle:"IFCarona",
-      headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#315e43" onPress={navigation.openDrawer}/>,
+      headerLeft:<Icon.Button  name="menu" size={30} backgroundColor="#315e43"  onPress={navigation.openDrawer}/>,
     }),
     contentComponent: SideMenu,
   }

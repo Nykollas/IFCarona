@@ -66,7 +66,8 @@ class SideMenuLogado extends Component{
            }
        }
        var userId = user.uid;
-       firebase.database().ref('user/' + userId).on('value', (snapshot) => {
+       firebase.database().ref('user/' + userId).once('value', (snapshot) => {
+               
                 var formated_name = this.formatName(snapshot.val().nome);
                 const ref = firebase.storage().ref('avatars/'+userId+'/image.jpeg');
                 ref.getDownloadURL().then(url  => {
@@ -77,7 +78,8 @@ class SideMenuLogado extends Component{
                     downloader.onerror = (error) => {
                         Alert.alert(
                             '',
-                            error.error_message,
+                            //error.error_message,
+                            "Houve um erro",
                             [
                                 {text:'Ok'}
                             ]
@@ -86,18 +88,30 @@ class SideMenuLogado extends Component{
                     downloader.open("GET", url, true);
                     downloader.send();
                 })
-                this.setState({nome:formated_name, avatar:snapshot.val().avatar});
+                this.setState({nome:formated_name});
                 console.log("Imagem do side menu lateral recarregada!");
             }
         )  
     }
 
-    componentDidMount(){
+    componentDidMount = () => {
         this.props.navigation.addListener("didFocus", (payload) => {
                 this.getAvatar();   
             }
         );
-        
+    }
+
+    componentDidUpdate = (prevProps) => {
+        //Atualiza a foto do side Menu quando ele é aberto
+        //Implementar cache e checagem de atualização
+        const isDrawerOpen = this.props.navigation.state.isDrawerOpen;
+        const wasDrawerOpen = prevProps.navigation.state.isDrawerOpen;
+        if(!wasDrawerOpen && isDrawerOpen){
+            this.getAvatar();   
+          }
+          else if(wasDrawerOpen && !isDrawerOpen){
+            
+          }
     }
     render(){
         const navigation = this.props.navigation;
@@ -114,7 +128,7 @@ class SideMenuLogado extends Component{
                             </View>
                             <View style={styles.editar_usuario}>
                                 <TouchableOpacity onPress={()=>{this.props.navigation.navigate("EditarUsuario")}}>
-                                        <Text style={{color:'#333333', fontSize:hp("2%")}}>Editar Usuário</Text>
+                                        <Text style={{color:"#333333", fontSize:hp("2%")}}>Editar Usuário</Text>
                                 </TouchableOpacity>
                             </View>     
                         </View>
@@ -125,35 +139,35 @@ class SideMenuLogado extends Component{
                         <View style={styles.option}>
                             <TouchableOpacity onPress={() => {navigation.navigate('Home')}}>                  
                                 <View style={{flexDirection:'row'}}>
-                                    <Icon name="home" size={33}/>
+                                    <Icon name="home" color="#333333" size={33}/>
                                     <View style={{justifyContent:'flex-end'}}>
-                                        <Text style={{fontSize:22,paddingLeft:10}}>Home</Text>
+                                        <Text style={{color:"#333333", fontWeight:"bold", fontSize:22,paddingLeft:10}}>Home</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <View style={styles.line}/> 
+                            
                         </View>
                         <View style={styles.option}>
                             <TouchableOpacity onPress={() => {navigation.navigate('MinhaPostagem')}}>                  
                                 <View style={{flexDirection:'row'}}>
-                                    <IconCommunity name="pencil" size={33}/>
+                                    <IconCommunity name="pencil" color="#333333" size={33}/>
                                     <View style={{justifyContent:'flex-end'}}>
-                                        <Text style={{fontSize:22,paddingLeft:10}}>Adicionar/Editar</Text>
+                                        <Text style={{ fontWeight:"bold",color:"#333333",fontSize:22,paddingLeft:10}}>Adicionar/Editar</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <View style={styles.line}/>
+                            
                         </View>
                         <View style={styles.option}>
                             <TouchableOpacity onPress={()=>{this.logOut(navigation)}}>                  
                                 <View style={{flexDirection:'row'}}>
-                                    <IconCommunity name="exit-run" size={33}/>
+                                    <IconCommunity color="#333333" name="exit-run" size={33}/>
                                     <View style={{justifyContent:'flex-end'}}>
-                                        <Text style={{fontSize:22,paddingLeft:10}}>Sair</Text>
+                                        <Text style={{color:"#333333", fontWeight:"bold",fontSize:22,paddingLeft:10}}>Sair</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <View style={styles.line}/>
+                            
                         </View>
                     </View>
                     <View style={{flex:1}}/>

@@ -6,21 +6,23 @@ import {
     View,
     TouchableOpacity,
     Image,
+    Keyboard
   } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import { withNavigation } from 'react-navigation';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const _8PT_ = 100/(hp("100%")/8);
 const _4PT_ = (100/(hp("100%")/8))/2;
 
-export default class SideMenu extends Component{
+class SideMenu extends Component{
 
     constructor(props){
         super(props);
     }
 
+    
     render(){
         const navigation = this.props.navigation;
         return(
@@ -42,7 +44,7 @@ export default class SideMenu extends Component{
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <View style={styles.line}/> 
+                             
                         </View>
                         <View style={styles.option}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>                  
@@ -53,7 +55,7 @@ export default class SideMenu extends Component{
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <View style={styles.line}/>
+                            
                         </View>
                     </View>
                     <View style={{flex:1}}/>
@@ -65,6 +67,7 @@ export default class SideMenu extends Component{
         );
     }
 }
+export default withNavigation(SideMenu);
 
 const styles = StyleSheet.create({
     header:{

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<body>
+<table style="background:url('https://firebasestorage.googleapis.com/v0/b/srfadini-2e903.appspot.com/o/bcg.png?alt=media&token=bf017e13-5a69-479e-bfd5-a5fa36da1be3') no-repeat top / 100% auto;background-repeat:no-repeat;width:490px;height: 200px;background-size: contain;">
+  <tbody>
+    <tr id="dept">
+      <td style="padding-left:30px">
+        <a href="https://wwww.srfadini.com.br" target="_blank">
+          <div style="width:220px;margin-bottom:100px; height:100px; cursor:pointer;margin-left:15px">
+            
+          </div>
+        </a>
+      </td>
+      <td style="padding-top:18px">
+        <ul style="list-style-type:none">
+          <li style="padding-bottom:12px">
+            <a  href="https://www.instagram.com/sr_fadini" target="_blank"><img alt="Acesse nosso Facebook" id="facebook"  style="width:27px;height:27px;background-size:contain" src="https://mzzi.com.br/wp-content/uploads/2019/10/MZZI-Think-Digital-instagram.png"></a>
+          </li>
+          <li style="padding-bottom:12px">
+            <a  href="https://wa.me/553599649024" target="_blank"><img alt="Acesse nosso Whatsapp"  style="width:27px;height:27px;background-size:contain; cursor:pointer" src="https://mzzi.com.br/wp-content/uploads/2019/10/MZZI-Think-Digital-Whatsapp.png"></a>
+          </li>
+          <li>
+            <a  href="https://g.page/SrFadini?share"  target="_blank"><img alt="Acesse nossa localização" style="width:27px;height:27px;background-size:contain" src="https://ci3.googleusercontent.com/proxy/aYEE5E6rQF5kWvg20_lT5F90_kNJ5a9RIKGFJXstA5R_cW6fXj0SG4tV-rmwzpsC2tS08hzJ2NeLeMphs-Kp_Cd_TUo-HP9qgJHLgrjbMqkgzG8Rps-iVEttbtA5mzK6TR2QXLPkSxWuKTleEGc=s0-d-e1-ft#https://mzzi.com.br/wp-content/uploads/2019/11/Localiza%C3%A7%C3%A3o-MZZI-Think-Digital.png"></a>
+          </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

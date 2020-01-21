@@ -39,7 +39,7 @@ export default class Login extends Component{
 
     adicionarImagem =  async () =>{
         ImagePicker.showImagePicker(this.imagePickerOptions, (response) => {
-            console.log('Response = ', response);
+            
           
             if (response.didCancel) {
                 console.log('Usuário cancelou a adição de imagem');
@@ -95,15 +95,20 @@ export default class Login extends Component{
     }
 
     uploadSucessfulCallback = () =>{
-        this.setState({uploading:false});
-        this.props.navigation.navigate("Home");
+        var uid = firebase.auth().currentUser.uid;
+        firebase.storage().ref('avatars/'+uid+'/image.jpeg').getDownloadURL().then(url => {
+            
+            firebase.database().ref("ofertas/"+uid+"/avatar").set(url);
+        }).then(() => {
+            this.setState({uploading:false});
+            this.props.navigation.navigate("Home");
+        })
     }
 
 
 
     upImagem = () => {
         var uid = firebase.auth().currentUser.uid;
-
         const imageBlob = new Blob([this.state.image], {type:'image/jpeg'})
         const ref = firebase.storage().ref('avatars/'+uid+'/image.jpeg');
         var uploadTask = ref.put(imageBlob, { contentType: 'image/jpg' });

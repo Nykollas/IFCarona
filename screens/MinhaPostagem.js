@@ -12,7 +12,6 @@ import {
     Switch,
     ActivityIndicator,
 } from 'react-native';
-import {systemWeights} from 'react-native-typography';
 import MapView, { Marker } from "react-native-maps";
 import Geocoder from 'react-native-geocoding';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,16 +19,14 @@ import MapViewDirections from 'react-native-maps-directions';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import SwitchSelector from 'react-native-switch-selector';
 import firebase from 'firebase';
-
-
 const _8PT_ = 100/(hp("100%")/8);
 const _4PT_ = (100/(hp("100%")/8))/2;
-
 const API_KEY_GOOGLE_MAPS = "AIzaSyDNlio27LqraNed4EAIjmjBiuEQ46UjyIg";
 export default class MinhaPostagem extends Component {
-
     state = {
-        vehicle: '1',
+        vehicle: 1,
+        frequency: '1',
+        time: '1',
         contato: '',    
         prev_contato: '',
         desc: '',
@@ -41,27 +38,32 @@ export default class MinhaPostagem extends Component {
         found: false,
         founding: false,
         region: null,
-        switch_text: "Ofereço carona",
+        switch_text: "Procuro carona",
     }
-
     erro_in_add = 0;
-
     initialRegion = {
         latitude: this.state.start.latitude,
         longitude: this.state.start.longitude,
         latitudeDelta: 0.003,
         longitudeDelta: 0.0011,
     }
-
-    options = [
+    options_vehicle = [
         {activeColor:'red', label: 'Moto', value: '1' },
         {activeColor:'red', label: 'Carro', value: '2' },
         {activeColor:'red', label: 'Van', value: '3' }
     ];
-    
-
+    options_time = [
+        {activeColor:'red', label: 'Matutino', value: '1' },
+        {activeColor:'red', label: 'Noturno', value: '2' },
+        {activeColor:'red', label: 'Integral', value: '3' }
+    ];
+    options_frequency = [
+        {activeColor:'red', label: 'Ida', value: '1' },
+        {activeColor:'red', label: 'Volta', value: '2' },
+        {activeColor:'red', label: 'Ida/Volta', value: '3' }
+    ];
     deformatContato(string) {
-        arr = new Array(200);
+        let arr = new Array(200);
         var counter = 0
         for (var y = 0; y < string.length; y++) {
             if (string[y] != '(' && string[y] != ')' && string[y] != '-') {
@@ -170,7 +172,6 @@ export default class MinhaPostagem extends Component {
         }
         return 1;
     }
-
     getOferta = () => {
         var userId = firebase.auth().currentUser.uid;
         firebase.database().ref("ofertas/" + userId).on("value", (snapshot) => {
@@ -200,17 +201,20 @@ export default class MinhaPostagem extends Component {
         firebase.database().ref('user/' + userId).on('value',
             (snapshot) => {
                 let nome = snapshot.val().nome;
-                let avatar = snapshot.val().avatar;
-                firebase.database().ref('ofertas/' + userId)
+                
+                firebase.storage().ref("avatars/"+userId+"/image.jpeg").getDownloadURL().then((url) => {
+                    firebase.database().ref('ofertas/' + userId)
                     .set({
                         start: this.state.start,
                         end: this.state.end,
                         vehicle: this.state.vehicle,
                         nome: nome, contato: this.state.contato,
-                        avatar: avatar,
+                        time:this.state.time,
+                        frequency:this.state.frequency,
                         procura: this.state.procura,
                         descr_start: this.state.descr_start,
                         descr_end: this.state.descr_end,
+                        avatar:url
                     }).catch((error) => {
                         this.erro_in_add = 1;
                         Alert.alert(
@@ -221,20 +225,22 @@ export default class MinhaPostagem extends Component {
                             ],
                             { cancelable: false },
                         );
-                    }
-                    );
-            }
-        );
+                    });
+                });
+            });
         if (!this.erro_in_add) {
             Alert.alert(
                 '',
-                'Oferta adicionada com sucesso!',
+                'Atualizado com sucesso!',
                 [
                     { text: 'OK', },
                 ],
                 { cancelable: false },
             );
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate("Procura",{
+                                                recentlyUpdate:true
+                                                }
+                                );
         } else {
             this.erro_in_add = 0;
         }
@@ -242,8 +248,6 @@ export default class MinhaPostagem extends Component {
 
     getLocation = (descr_start, descr_end) => {
         this.setState({ founding: true })
-        console.log(descr_start);
-        console.log(descr_end);
         Geocoder.from(descr_start)
             .then(json => {
                 var start = { latitude: null, longitude: null };
@@ -261,19 +265,20 @@ export default class MinhaPostagem extends Component {
                         end.longitude = json.results[0].geometry.location.lng;
                         this.setState({ end: end, found: true, founding: false });
                         this.goToOriginRegion();
-                    })
-            })
-            .catch(error => {
+                    }).catch(error => {
+                        this.setState({ founding: false });
+                        Alert.alert(
+                            '',
+                            //"Houve um erro ao traçar a rota por favor cheque os dados inseridos",
+                            error.error_message,
+                            [
+                                { text: 'OK', },
+                            ],
+                            { cancelable: false },
+                        );
+                    });
+            }).catch(error => {
                 this.setState({ founding: false });
-                Alert.alert(
-                    '',
-                    //"Houve um erro ao traçar a rota por favor cheque os dados inseridos",
-                    error.error_message,
-                    [
-                        { text: 'OK', },
-                    ],
-                    { cancelable: false },
-                );
             });
 
 
@@ -362,9 +367,22 @@ export default class MinhaPostagem extends Component {
                                         }))
                                     }} />
                             </View>
+                            <Text style={{fontWeight:"bold",color:'white', marginBottom:hp(2*_8PT_),fontColor:'white',fontSize:16*_8PT_}}>Veículo</Text>
                             <View style={[{ flexDirection: 'row' }, styles.input_vehicle_container]}>
                                 <View style={styles.input_vehicle}>
-                                    <SwitchSelector textColor={'#7A7A7A'} fontSize={16} options={this.options} initial={this.state.vehicle} onPress={value =>  this.setState({vehicle:value})} />
+                                    <SwitchSelector textColor={'#7A7A7A'} fontSize={16} options={this.options_vehicle} initial={this.state.vehicle} onPress={value => {console.log(value); this.setState({vehicle:value})}} />
+                                </View>
+                            </View>
+                            <Text style={{fontWeight:"bold",color:'white', marginBottom:hp(2*_8PT_),fontColor:'white',fontSize:16*_8PT_}}>Período</Text>
+                            <View style={[{ flexDirection: 'row' }, styles.input_vehicle_container]}>
+                                <View style={styles.input_vehicle}>
+                                    <SwitchSelector textColor={'#7A7A7A'} fontSize={16} options={this.options_time} initial={this.state.time-1} onPress={value =>  this.setState({time:value})} />
+                                </View>
+                            </View>
+                            <Text style={{fontWeight:"bold",color:'white', marginBottom:hp(2*_8PT_),fontColor:'white',fontSize:16*_8PT_}}>Frequência</Text>
+                            <View style={[{ flexDirection: 'row' }, styles.input_vehicle_container]}>
+                                <View style={styles.input_vehicle}>
+                                    <SwitchSelector textColor={'#7A7A7A'} fontSize={16} options={this.options_frequency} initial={this.state.frequency-1} onPress={value => {this.setState({frequency:value})} }/>
                                 </View>
                             </View>
                             <View style={styles.input_place_saida_container}>
@@ -595,7 +613,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             zIndex:3,
             left:hp(3 * _8PT_ + 2*_4PT_),
-            top: 14 * hp(2* _8PT_ + _4PT_),
+            top: 26 * hp(2* _8PT_ + _4PT_),
             position:'absolute',
         },
         input_place_saida_container: {
@@ -616,7 +634,7 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             zIndex:3,
             left:hp(3 * _8PT_ + 2*_4PT_),
-            top: 11 * hp(2* _8PT_ + _4PT_),
+            top:23 * hp(2* _8PT_ + _4PT_),
             position:'absolute',
         },
         input_place: {
