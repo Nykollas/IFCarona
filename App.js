@@ -38,7 +38,7 @@ console. disableYellowBox = true;
 
 
 const config = {
-    apiKey: "AIzaSyAPZj3h71if9tP8p8ozynphv6qFhg7S3zU",
+    apiKey: "",
     authDomain: "ifride.firebaseapp.com",
     databaseURL: "https://ifride.firebaseio.com/",
     storageBucket: "gs://ifride.appspot.com/"
@@ -48,7 +48,7 @@ const config = {
     firebase.initializeApp(config);
   }
 
-Geocoder.init("AIzaSyDNlio27LqraNed4EAIjmjBiuEQ46UjyIg"); 
+Geocoder.init(""); 
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#4cb993ff',
