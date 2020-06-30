@@ -35,7 +35,7 @@
     "react-navigation-stack": "^1.9.3",
     "react-navigation-tabs": "^2.5.5",
     "tslib": "1.10.0",
-    "yarn": "^1.16.0"
+    "yarn": "^1.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
